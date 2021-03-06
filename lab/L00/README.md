@@ -36,7 +36,7 @@
 
 ###  Решение:
   1. Базовая  конфигурация  Роутера и  Коммутатора:
-      * Для  начало настроим базовые настройки  на на наших устройствах  которые индентичны на R1,S1,S2. Я для удобства изначально записываю пул команд в  тесктовый  редактор после изменяя только hostname вставляю в CLI нашего устройсва
+      * Для  начало настроим базовые настройки  на на наших устройствах  которые идентичные на R1,S1,S2. Я для удобства изначально записываю пул команд в  текстовый  редактор после изменяя только hostname вставляю в CLI нашего устройства:
       
         ```
             enable
@@ -64,7 +64,7 @@
         ```
       
   2. Создание VLAN и назначения  портов:
-        * Создаем  VLAN  на S1 и  S2 орентируясь на "Таблицу VLAN"
+        * Создаем  VLAN  на S1 и  S2 орентируясь на "Таблицу VLAN":
 
                 configure terminal
                 vlan 3
@@ -76,7 +76,7 @@
                 vlan  8
                 name Native
 
-        * Сосздадим VSI интерфейс в Management вилане для каждого коммутатора 
+        * Создадим VSI интерфейс в Management вилане для каждого коммутатора:
 
                 S1(config)#interface vlan 3
                 S1(config-if)#ip address 192.168.3.11 255.255.255.0
@@ -92,7 +92,7 @@
                 S2(config-if)#exit
                 S2(config)#ip default-gateway 192.168.3.1
 
-        * Назначим  все не использованые порты во VLAN ParkingLot 7
+        * Назначим  все не использованные порты во VLAN ParkingLot 7:
 
                 S1(config)#interface  range fastEthernet0/2-4 , fastEthernet0/7-24
                 S1(config-if-range)#shutdown 
@@ -104,7 +104,7 @@
                 S2(config-if-range)#switchport mode access
                 S2(config-if-range)#switchport access vlan 7
 
-        * Назначим активные порты в актуальные VLAN использую "Таблицу VLAN"
+        * Назначим активные порты в актуальные VLAN использую "Таблицу VLAN":
 
                 S2(config)#interface  fa0/18
                 S2(config-if)#switchport mode access 
@@ -120,7 +120,7 @@
 
   3. Настройка Trunk порта между коммутаторами:
 
-        * Настройка Trunk порта, изменения native vlan и пропуск только конкретных vlan
+        * Настройка Trunk порта, изменения native vlan и пропуск только конкретных vlan:
 
                 S1(config)#interface fa0/1
                 S1(config-if)#switchport mode trunk
@@ -142,7 +142,7 @@
                 S2(config-if)#description  to S1
 
 
-  4. Настройка маршрутизации между  VLAN на роутере;
+  4. Настройка маршрутизации между  VLAN на роутере:
 
         * Настройка сабинтерфейсов на роутере.
 
@@ -161,7 +161,7 @@
                 GigabitEthernet0/0/1.4 192.168.4.1     YES manual up                    up 
                 GigabitEthernet0/0/1.8 unassigned      YES unset  up                    up 
 
-  5. Убедиться что маршрутизация между VLAN работает;
+  5. Убедиться что маршрутизация между VLAN работает:
 
         * Пинг с PC-A до шлюза 
                 
