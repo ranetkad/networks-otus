@@ -4,4 +4,4 @@
  - [Проектная работа](end/).
 
 
-![](Img/OTUS.png)
+![](img/OTUS.png)
