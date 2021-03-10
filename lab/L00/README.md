@@ -249,7 +249,7 @@
         ___
 
 
-     [Config R1,S1,S2](https://github.com/ranetkad/networks-otus/tree/main/lab/L00/cfg)
+     [Config R1,S1,S2](lab/L00/cfg)
 
 
         [Вверх](#top)
