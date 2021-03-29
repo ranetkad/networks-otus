@@ -1,0 +1,23 @@
+enable
+configure terminal
+hostname S1
+no ip domain-lookup
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+exit
+line vty 0 4
+password cisco
+login
+exit
+service password-encryption 
+banner motd #
+This device is for authorized personnel only.
+If you have not been provided with permission to
+access this device - disconnect at once.
+#
+exit
+write
+clock set 12:30:00 21 March 2021
