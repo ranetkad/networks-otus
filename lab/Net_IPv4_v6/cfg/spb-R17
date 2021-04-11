@@ -1,0 +1,134 @@
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname spb-R17
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$FayW$hwSPVj4SV4ItKPpSBfQur0
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+ip dhcp excluded-address 192.168.3.1 192.168.3.10
+!
+ip dhcp pool USER
+ network 192.168.3.0 255.255.255.0
+ domain-name lte.com
+ default-router 192.168.3.1
+ lease 2 2 13
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no ip address
+!
+interface Ethernet0/0.444
+ description MGM
+ encapsulation dot1Q 444
+ ip address 100.64.2.2 255.255.255.0
+ standby version 2
+ standby 1 ip 100.64.2.1
+ standby 1 priority 90
+!
+interface Ethernet0/0.555
+ description to user
+ encapsulation dot1Q 555
+ ip address 192.168.3.2 255.255.255.0
+ standby version 2
+ standby 1 ip 192.168.3.1
+ standby 1 priority 90
+ ipv6 address 20FF:CCFF:2000:7::1/64
+!
+interface Ethernet0/1
+ description to R18
+ ip address 78.98.180.17 255.255.255.0
+ ipv6 address 20FF:CCFF:200A:3::17/64
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ password 7 1511021F07256B
+ logging synchronous
+ login
+line aux 0
+line vty 0 4
+ password 7 14141B180F0B
+ login
+ transport input none
+!
+!
+end

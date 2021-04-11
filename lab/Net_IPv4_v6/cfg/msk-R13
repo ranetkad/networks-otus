@@ -1,0 +1,163 @@
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname msk-R13
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$Moxv$Pq5bQ4PWAiOiw1etZ6J37/
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+          
+          
+!         
+ip dhcp excluded-address 192.168.1.1 192.168.1.10
+!
+ip dhcp pool USERS
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1 
+ domain-name user.com
+ dns-server 192.168.1.1 
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ description to msk-sw5
+ no ip address
+!
+interface Ethernet0/0.301
+ description USERS
+ encapsulation dot1Q 301
+ ip address 192.168.1.2 255.255.255.0
+ standby version 2
+ standby 1 ip 192.168.1.1
+ ipv6 address FE80::13 link-local
+ ipv6 address 20FF:CCFF:2000:5::1/64
+!
+interface Ethernet0/0.601
+ description MGM 
+ encapsulation dot1Q 601
+ ip address 100.64.0.254 255.255.255.0
+ standby version 2
+ standby 1 ip 100.64.0.1
+ standby 1 priority 110
+!
+interface Ethernet0/1
+ description to  R14 
+ ip address 77.97.130.13 255.255.255.0
+ ipv6 address 20FF:CCFF:2000:3::13/64
+!
+interface Ethernet0/2
+ description to R15
+ ip address 77.97.131.13 255.255.255.0
+ ipv6 address 20FF:CCFF:2000:4::13/64
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no ip address
+!
+interface Ethernet1/0.301
+ encapsulation dot1Q 301
+!
+interface Ethernet1/0.601
+ encapsulation dot1Q 601
+!
+interface Ethernet1/1
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+!         
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+banner motd ^C
+This device is for authorized personnel only.
+If you have not been provided with permission to
+access this device - disconnect at once.
+^C
+!
+line con 0
+ password 7 05080F1C2243
+ logging synchronous
+ login
+line aux 0
+line vty 0 4
+ password 7 0822455D0A16
+ login
+ transport input none
+!
+!
+end

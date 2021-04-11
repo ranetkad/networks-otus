@@ -1,0 +1,128 @@
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname tri-R26
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$ZAxD$Cd3mgnSJg2.jXUqzn5EAH0
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ description to tri-R24
+ ip address 90.90.91.26 255.255.255.0
+ ipv6 address 20FF:CCFF:200B:2::26/64
+!
+interface Ethernet0/1
+ ip address 90.90.93.26 255.255.255.0
+!
+interface Ethernet0/2
+ description to tri_r25
+ ip address 90.90.94.26 255.255.255.0
+ ipv6 address 20FF:CCFF:200B:4::26/64
+!
+interface Ethernet0/3
+ description to spb-R18
+ ip address 90.90.95.26 255.255.255.0
+ ipv6 address 20FF:CCFF:200B:6::26/64
+!
+interface Ethernet1/0
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ password 7 13061E010803
+ logging synchronous
+ login
+line aux 0
+line vty 0 4
+ password 7 045802150C2E
+ login
+ transport input none
+!
+!
+end

@@ -1,0 +1,119 @@
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname msk-R14
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$ElSW$4NkWSYb5B7KFfQV735jjP/
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!         
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ description to R12
+ ip address 77.97.128.14 255.255.255.0
+ ipv6 address 20FF:CCFF:2000:1::14/64
+!
+interface Ethernet0/1
+ description to R13 
+ ip address 77.97.130.14 255.255.255.0
+ ipv6 address 20FF:CCFF:2000:3::14/64
+!
+interface Ethernet0/2
+ description to kit-22
+ ip address 33.33.33.14 255.255.255.0
+ ipv6 address 20FF:CCFF:200A:4::14/64
+!
+interface Ethernet0/3
+ description to R19 
+ ip address 77.97.129.14 255.255.255.0
+ ipv6 address 20FF:CCFF:2000:2::14/64
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!         
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+banner motd ^C
+This device is for authorized personnel only.
+If you have not been provided with permission to
+access this device - disconnect at once.
+^C
+!
+line con 0
+ password 7 110A1016141D
+ logging synchronous
+ login
+line aux 0
+line vty 0 4
+ password 7 0822455D0A16
+ login
+ transport input none
+!
+!
+end

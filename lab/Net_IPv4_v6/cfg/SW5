@@ -1,0 +1,140 @@
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname msk-sw5
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$lZKC$ezWkOkSzYkzq5wdzKbFVt/
+!
+no aaa new-model
+clock timezone EET 2 0
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ description LACP to msk-sw4
+ switchport trunk allowed vlan 301,601,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+!
+interface Port-channel5
+ description LACP to msk-sw4
+ switchport trunk allowed vlan 301,602,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+!
+interface Ethernet0/0
+ description to msk-sw2
+ switchport trunk allowed vlan 301,601,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+!
+interface Ethernet0/1
+ switchport trunk allowed vlan 301,601,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+!
+interface Ethernet0/2
+ switchport trunk allowed vlan 301,602,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+ channel-group 5 mode on
+!
+interface Ethernet0/3
+ switchport trunk allowed vlan 301,602,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+ channel-group 5 mode on
+!
+interface Ethernet1/0
+ description to msk-sw4
+ switchport trunk allowed vlan 301,601,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+!
+interface Ethernet1/1
+ switchport trunk allowed vlan 301,601,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+!
+interface Ethernet1/2
+!
+interface Ethernet1/3
+!
+interface Vlan601
+ ip address 100.64.0.5 255.255.255.0
+!
+ip default-gateway 100.64.0.1
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner motd ^C
+This device is for authorized personnel only.
+If you have not been provided with permission to
+access this device - disconnect at once.
+^C
+!
+line con 0
+ password 7 030752180500
+ logging synchronous
+ login
+line aux 0
+line vty 0 4
+ password 7 00071A150754
+ login
+!
+!
+end

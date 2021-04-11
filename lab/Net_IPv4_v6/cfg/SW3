@@ -1,0 +1,111 @@
+!
+! Last configuration change at 08:50:52 EET Sun Apr 11 2021
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname msk-sw3
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$xm/9$Oz2Y2QvQmDGCbnCxq7hPK/
+!
+no aaa new-model
+clock timezone EET 2 0
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip cef
+no ipv6 cef
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ description to msk-sw4
+ switchport trunk allowed vlan 301,601,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+!
+interface Ethernet0/1
+ description to msk-sw5
+ switchport trunk allowed vlan 301,601,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+!
+interface Ethernet0/2
+ description VPC1
+ switchport access vlan 301
+ switchport mode access
+!
+interface Ethernet0/3
+!
+interface Ethernet1/0
+!
+interface Ethernet1/1
+!
+interface Ethernet1/2
+!
+interface Ethernet1/3
+!
+interface Vlan601
+ ip address 100.64.0.3 255.255.255.0
+!
+ip default-gateway 100.64.0.1
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner motd ^C
+This device is for authorized personnel only.
+If you have not been provided with permission to
+access this device - disconnect at once.
+^C
+!
+line con 0
+ password 7 1511021F0725
+ logging synchronous
+ login
+line aux 0
+line vty 0 4
+ password 7 110A1016141D
+ login
+!
+!
+end
