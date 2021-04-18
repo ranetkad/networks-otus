@@ -230,8 +230,8 @@
 | tri-R25     | e0/1 | IPv6    |20FF:CCFF:200C:1::25/64   | 20FF:CCFF:200C:1::/48 | tri-R25 to lab-R27    | 
 | tri-R25   | e0/2 | IPv4    | 90.90.90.25           | 90.90.88.0/24         |  tri-R25  to tri-R26  |
 | tri-R25    | e0/2 | IPv6    | 20FF:CCFF:200B:1::25/64   | 20FF:CCFF:200B:1::/48 | tri-R25  to tri-R26   | 
-| tri-R25    | e0/3 | IPv4    | 90.90.96.24          | 90.90.88.0/24         |  tri-R24  to tri-R18  |
-| tri-R25    | e0/3 | IPv6    |20FF:CCFF:200B:7::26/64     | 20FF:CCFF:200B:7::/48 | tri-R24  to tri-R18  | 
+| tri-R25    | e0/3 | IPv4    | 14.14.9.25          | 14.14.9.0/24         |  tri-R25  to cho-R28  |
+| tri-R25    | e0/3 | IPv6    | 20FF:CCFF:200F:7::25/64     | 20FF:CCFF:200F:7::/48 | tri-R25  to cho-R28  | 
 
 ------------
 
@@ -249,9 +249,9 @@
 | Оборудование | Порт | v4/6 | Адрес          | Сеть                | описание  |
 |-------|------|---------|--------------------------|------------------------|-----------------|
 | cho-R28   | e0/0 | IPv4    | 14.14.8.28    | 14.14.8.0/24     | cho-R28 to tri-R26|
-| cho-R28    | e0/0 | IPv6    | 20FF:CCFF:200F:6::28/64 | 20FF:CCFF:200B::/48 | cho-R28 to tri-R26  |
+| cho-R28    | e0/0 | IPv6    | 20FF:CCFF:200F:6::28/64 | 20FF:CCFF:200F::/48 | cho-R28 to tri-R26  |
 | cho-R28   | e0/2 | IPv4    | 14.14.9.28    | 14.14.8.0/24     | cho-R28 to tri-R25|
-| cho-R28    | e0/1 | IPv6    | 20FF:CCFF:200F:7::/64 | 20FF:CCFF:200B::/48 | cho-R28 to tri-R25  |
+| cho-R28    | e0/1 | IPv6    | 20FF:CCFF:200F:7::28/64 | 20FF:CCFF:200F::/48 | cho-R28 to tri-R25  |
 
 ------------
 
