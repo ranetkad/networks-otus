@@ -1,5 +1,6 @@
+
 !
-! Last configuration change at 20:55:49 EET Sun Apr 18 2021
+! Last configuration change at 00:43:10 EET Wed Apr 21 2021
 !
 version 15.4
 service timestamps debug datetime msec
@@ -38,11 +39,13 @@ ip dhcp excluded-address 10.14.0.129 10.14.0.139
 ip dhcp pool USER1
  network 10.14.0.0 255.255.255.128
  domain-name hui.com
+ default-router 10.14.0.1 
  lease 2 2 14
 !
 ip dhcp pool USER2
  network 10.14.0.128 255.255.255.128
  domain-name hui.com
+ default-router 10.14.0.129 
  lease 2 2 14
 !
 !
@@ -64,6 +67,10 @@ multilink bundle-name authenticated
 redundancy
 !
 !
+track 1 ip sla 1 reachability
+!
+track 2 ip sla 2 reachability
+!
 ! 
 !
 !
@@ -81,11 +88,15 @@ interface Ethernet0/0
  no shutdown
  description to tri-R26
  ip address 14.14.8.28 255.255.255.0
+ ip nat outside
+ ip virtual-reassembly in
  ipv6 address 20FF:CCFF:200F:6::28/64
 !
 interface Ethernet0/1
  no shutdown
  ip address 14.14.9.28 255.255.255.0
+ ip nat outside
+ ip virtual-reassembly in
  ipv6 address 20FF:CCFF:200F:7::28/64
 !
 interface Ethernet0/2
@@ -98,12 +109,17 @@ interface Ethernet0/2.555
  description user2
  encapsulation dot1Q 555
  ip address 10.14.0.129 255.255.255.128
+ ip nat inside
+ ip virtual-reassembly in
+ ip policy route-map VLAN555
 !
 interface Ethernet0/2.666
  no shutdown
  description to user
  encapsulation dot1Q 666
  ip address 10.14.0.1 255.255.255.128
+ ip nat inside
+ ip virtual-reassembly in
  ipv6 address 20FF:AAFF:2000:1::1/64
 !
 interface Ethernet0/2.777
@@ -142,11 +158,38 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
-ip route 0.0.0.0 0.0.0.0 14.14.8.26 name to-tri-r26
-ip route 0.0.0.0 0.0.0.0 14.14.9.25 name to-tri-r25
+ip nat inside source route-map NAT_TRI25 interface Ethernet0/1 overload
+ip nat inside source route-map NAT_TRIR26 interface Ethernet0/0 overload
+ip route 0.0.0.0 0.0.0.0 14.14.8.26 name tri-R26 track 1
+ip route 0.0.0.0 0.0.0.0 14.14.9.25 10 name to-tri-r25
 !
-ipv6 route ::/0 20FF:CCFF:200F:7::25 name to-tri-R25
-ipv6 route ::/0 20FF:CCFF:200F:6::26 name to-tri-R26
+ip access-list extended TWES
+ip access-list extended VLAN555
+ permit ip 10.14.0.128 0.0.0.127 any
+ip access-list extended VLAN666
+ permit ip 10.14.0.0 0.0.0.127 any
+!
+ip sla 1
+ icmp-echo 14.14.8.26 source-ip 14.14.8.28
+ip sla schedule 1 life forever start-time now
+ip sla 2
+ icmp-echo 14.14.9.25 source-ip 14.14.9.28
+ip sla schedule 2 life forever start-time now
+ipv6 route ::/0 20FF:CCFF:200F:6::26 5 name to-tri-r26
+ipv6 route ::/0 20FF:CCFF:200F:7::25 name to-tri-r25
+!
+route-map NAT_TRIR26 permit 10
+ match ip address VLAN555 VLAN666
+ match interface Ethernet0/0
+!
+route-map VLAN555 permit 10
+ match ip address VLAN555
+ set ip next-hop verify-availability 14.14.9.25 1 track 2
+ set ip next-hop 14.14.8.26
+!
+route-map NAT_TRI25 permit 10
+ match ip address VLAN555 VLAN666
+ match interface Ethernet0/1
 !
 !
 !
