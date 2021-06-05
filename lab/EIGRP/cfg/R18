@@ -1,0 +1,185 @@
+
+!
+! Last configuration change at 09:24:05 EET Sat Jun 5 2021
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname spb-R18
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$nIwV$B6HRTkHWwUWTnXMYqZLHH1
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 78.98.179.18 255.255.255.0
+ ipv6 address 20FF:CCFF:200A:2::18/64
+ ipv6 enable
+!
+interface Ethernet0/1
+ no shutdown
+ ip address 78.98.180.18 255.255.255.0
+ ipv6 address 20FF:CCFF:200A:3::18/64
+!
+interface Ethernet0/2
+ no shutdown
+ ip address 90.90.88.18 255.255.255.0
+ ipv6 address 20FF:CCFF:200B:7::18/64
+!
+interface Ethernet0/3
+ no shutdown
+ ip address 90.90.95.18 255.255.255.0
+ ipv6 address 20FF:CCFF:200B:6::18/64
+!
+!
+router eigrp TT
+ !
+ address-family ipv4 unicast autonomous-system 10
+  !
+  af-interface default
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/0
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+   redistribute static
+  exit-af-topology
+  network 78.98.179.0 0.0.0.255
+  network 78.98.180.0 0.0.0.255
+  eigrp router-id 0.0.0.18
+ exit-address-family
+!
+!
+router eigrp TTv6
+ !
+ address-family ipv6 unicast autonomous-system 10
+  !
+  af-interface default
+   shutdown
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/0
+   no shutdown
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   no shutdown
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/2
+   no shutdown
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/3
+   no shutdown
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+   redistribute static
+  exit-af-topology
+  eigrp router-id 0.0.0.18
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 90.90.88.24
+ip route 0.0.0.0 0.0.0.0 90.90.88.26
+!
+ipv6 route ::/0 Ethernet0/3
+ipv6 route ::/0 Ethernet0/2
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ password 7 045802150C2E
+ logging synchronous
+ login
+line aux 0
+line vty 0 4
+ password 7 13061E01080344
+ login
+ transport input none
+!
+!
+end
+    
